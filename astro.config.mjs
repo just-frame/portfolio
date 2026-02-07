@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://frame.dev', // Update this with your actual domain
+  site: 'https://justframe.xyz',
   vite: {
     plugins: [tailwindcss()]
   }
