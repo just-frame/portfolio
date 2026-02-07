@@ -1,0 +1,31 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="py-16 md:py-20">
+  <div class="section-divider mb-10"></div>
+
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+    <!-- Copyright -->
+    <p class="text-sm font-mono" style="color: var(--color-text-dim);">
+      <span style="color: var(--color-accent);">&copy;</span> {year} justframe
+    </p>
+
+    <!-- Quick links -->
+    <div class="flex items-center gap-6 text-sm">
+      <a
+        href="https://github.com/just-frame"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bracket-link"
+      >
+        github
+      </a>
+    </div>
+  </div>
+
+  <!-- Decorative terminal prompt -->
+  <div class="mt-10 text-xs font-mono" style="color: var(--color-text-dim);">
+    <span style="color: var(--color-accent);">$</span> echo "Built with Astro"
+  </div>
+</footer>
