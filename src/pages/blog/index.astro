@@ -35,7 +35,7 @@ const posts = (await getCollection('blog'))
       <div class="grid gap-2">
         {posts.map((post, index) => (
           <a
-            href={`/blog/${post.id}`}
+            href={`/blog/${post.id.replace(/\.md$/, '')}`}
             class="group flex flex-col md:flex-row md:items-baseline gap-1 md:gap-6 p-4 -mx-4 rounded-lg transition-all duration-200"
           >
             <time

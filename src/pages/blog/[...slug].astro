@@ -5,7 +5,7 @@ import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.id },
+    params: { slug: post.id.replace(/\.md$/, '') },
     props: { post },
   }));
 }
@@ -70,6 +70,34 @@ const { Content } = await render(post);
       <Content />
     </div>
   </article>
+
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox">
+    <img src="" alt="" />
+  </div>
+
+  <script>
+    const overlay = document.getElementById('lightbox');
+    const overlayImg = overlay?.querySelector('img');
+
+    document.querySelectorAll('.prose img').forEach((img) => {
+      img.addEventListener('click', () => {
+        if (overlay && overlayImg) {
+          overlayImg.src = (img as HTMLImageElement).src;
+          overlayImg.alt = (img as HTMLImageElement).alt;
+          overlay.classList.add('active');
+        }
+      });
+    });
+
+    overlay?.addEventListener('click', () => {
+      overlay.classList.remove('active');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') overlay?.classList.remove('active');
+    });
+  </script>
 </BaseLayout>
 
 <style>
@@ -160,6 +188,15 @@ const { Content } = await render(post);
   .prose :global(ol) {
     padding-left: 1.5rem;
     margin-bottom: 1.25rem;
+    list-style-type: disc;
+  }
+
+  .prose :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .prose :global(ul ul) {
+    list-style-type: circle;
   }
 
   .prose :global(li) {
@@ -188,10 +225,41 @@ const { Content } = await render(post);
     border-radius: 2px;
     border: 1px solid var(--color-border);
     margin: 1.5rem 0;
+    cursor: zoom-in;
+    transition: border-color 0.2s ease;
   }
 
   .prose :global(img:hover) {
     border-color: var(--color-accent);
+  }
+
+  /* Lightbox overlay */
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    cursor: zoom-out;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
   }
 
   /* Tables */
